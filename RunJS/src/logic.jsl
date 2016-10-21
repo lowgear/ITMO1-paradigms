@@ -1,0 +1,38 @@
+var turn = function (s) {
+    var wasneg = false;
+    var res = '';
+    for (var i = 0; i < s.length; i++) {
+        var it = s.charAt(i);
+        switch (it) {
+            case '&': res+='|'; continue;
+            case '|': res+='&'; continue;
+            case '~': wasneg = true; continue;
+            default:
+                if (it.match(/[a-z]/i)) {
+                    if (wasneg) {
+                        res+=it;
+                        wasneg = false;
+                    } else {
+                        res+='~'+it;
+                    }
+                    continue;
+                }
+                if (!isNaN(Number(it))) {
+                    if (wasneg) {
+                        res+=it;
+                        wasneg = false;
+                    } else {
+                        switch (it) {
+                            case '0':res+='1'; continue;
+                            case '1':res+='0'; continue;
+                        }
+                    }
+                    continue;
+                }
+                res+=it;
+        }
+    }
+    return res;
+};
+
+console.log(turn('a|b&1'));
